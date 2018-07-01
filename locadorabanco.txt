@@ -1,0 +1,76 @@
+CREATE TABLE `dadosClientes` (
+	`idDadosClientes` int NOT NULL,
+	`nomeDadosCliente` varchar(50) NOT NULL,
+	`emailDadosCliente` varchar(50) NOT NULL,
+	`telefoneDadosClientes` varchar(14) NOT NULL,
+	PRIMARY KEY (`idDadosClientes`)
+);
+
+CREATE TABLE `login` (
+	`idLogin` int NOT NULL,
+	`usuarioLogin` varchar(50) NOT NULL,
+	`senhaLogin` varchar(50) NOT NULL,
+	`idDadosClientes` INT NOT NULL,
+	PRIMARY KEY (`idLogin`)
+);
+
+CREATE TABLE `generos` (
+	`idGenero` int NOT NULL,
+	`nomeGenero` varchar(50) NOT NULL,
+	PRIMARY KEY (`idGenero`)
+);
+
+CREATE TABLE `consoles` (
+	`idConsole` int NOT NULL,
+	`nomeConsole` varchar(30) NOT NULL,
+	PRIMARY KEY (`idConsole`)
+);
+
+CREATE TABLE `jogos` (
+	`idJogo` int NOT NULL NULL AUTO_INCREMENT,
+	`nomeJogo` varchar(30) NOT NULL,
+	`valorJogo` DECIMAL(10.0,2.0) NOT NULL,
+	`idGenero` INT NOT NULL,
+	`idConsole` INT NOT NULL,
+	PRIMARY KEY (`idJogo`)
+);
+
+CREATE TABLE `estoque` (
+	`idEstoque` int NOT NULL,
+	`idJogo` INT NOT NULL,
+	`quantidadeEstoque` int NOT NULL,
+	PRIMARY KEY (`idEstoque`)
+);
+
+CREATE TABLE `Locacao` (
+	`idLocacao` int NOT NULL,
+	`idJogo` INT NOT NULL,
+	`idCadastroClientes` INT NOT NULL,
+	`dataLocacao` DATE NOT NULL,
+	`dataEntrega` DATE NOT NULL,
+	`situacao` varchar(30) NOT NULL,
+	PRIMARY KEY (`idLocacao`)
+);
+
+CREATE TABLE `cadastroClientes` (
+	`nomeCliente` varchar(50) NOT NULL,
+	`cpfCliente` INT NOT NULL,
+	`enderecoCliente` varchar(50) NOT NULL,
+	`numeroEndereco` INT NOT NULL,
+	`telResidencial` INT(10) NOT NULL,
+	`telCelular` INT(11) NOT NULL,
+	`idCadastroClientes` INT NOT NULL,
+	PRIMARY KEY (`cpfCliente`)
+);
+
+ALTER TABLE `login` ADD CONSTRAINT `login_fk0` FOREIGN KEY (`idDadosClientes`) REFERENCES `dadosClientes`(`idDadosClientes`);
+
+ALTER TABLE `jogos` ADD CONSTRAINT `jogos_fk0` FOREIGN KEY (`idGenero`) REFERENCES `generos`(`idGenero`);
+
+ALTER TABLE `jogos` ADD CONSTRAINT `jogos_fk1` FOREIGN KEY (`idConsole`) REFERENCES `consoles`(`idConsole`);
+
+ALTER TABLE `estoque` ADD CONSTRAINT `estoque_fk0` FOREIGN KEY (`idJogo`) REFERENCES `jogos`(`idJogo`);
+
+ALTER TABLE `Locacao` ADD CONSTRAINT `Locacao_fk0` FOREIGN KEY (`idJogo`) REFERENCES `jogos`(`idJogo`);
+
+ALTER TABLE `Locacao` ADD CONSTRAINT `Locacao_fk1` FOREIGN KEY (`idCadastroClientes`) REFERENCES `cadastroClientes`(`idCadastroClientes`);
